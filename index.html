@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오션중학교 업무 경감 앱 모음 (오.경.감)</title>
+    <!-- 바로가기 아이콘 (파비콘) 설정 -->
+    <link rel="icon" type="image/png" href="image_6ff017.png">
+    <link rel="apple-touch-icon" href="image_6ff017.png">
+    <style>
+        :root {
+            --primary-blue: #1A34A5;
+            --secondary-blue: #0D1C68;
+            --accent-blue: #4A90E2;
+            --light-blue: #D6E4FF;
+            --sky-blue: #93C5FD;
+            --bg-color: #F1F5F9;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: var(--secondary-blue);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: #64748B;
+            margin-top: 6px;
+        }
+
+        .main-container {
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 850px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* SVG 인터랙티브 스타일 */
+        .emblem-svg {
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            filter: drop-shadow(0px 8px 16px rgba(13, 28, 104, 0.15));
+        }
+
+        .nav-btn {
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .nav-btn:hover {
+            filter: brightness(1.1) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+            transform: scale(1.02);
+            transform-origin: center;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 컨트롤 패널 */
+        .control-panel {
+            width: 100%;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .edit-toggle-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .edit-toggle-btn:hover {
+            background-color: var(--secondary-blue);
+        }
+
+        .info-badge {
+            font-size: 0.85rem;
+            color: #64748B;
+            background-color: #F8FAFC;
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid #E2E8F0;
+        }
+
+        /* 모달 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            padding: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            animation: modalFadeIn 0.2s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .modal-header h3 {
+            color: var(--secondary-blue);
+            font-size: 1.2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #94A3B8;
+            cursor: pointer;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #CBD5E1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(26, 52, 165, 0.1);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: #E2E8F0;
+            color: #475569;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        /* 툴팁 스타일 */
+        .tooltip {
+            position: absolute;
+            background: rgba(15, 23, 42, 0.9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            pointer-events: none;
+            display: none;
+            z-index: 100;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>오션중학교 업무 경감 포털</h1>
+        <p>원하는 메뉴 아이콘을 클릭하여 해당 업무 시스템으로 바로 이동하세요.</p>
+    </header>
+
+    <main class="main-container">
+        <!-- 툴팁 -->
+        <div id="tooltip" class="tooltip"></div>
+
+        <!-- 교표 인터랙티브 SVG -->
+        <svg class="emblem-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- 그라데이션 및 경로 정의 -->
+                <linearGradient id="outerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#1A34A5"/>
+                    <stop offset="100%" stop-color="#0B1B61"/>
+                </linearGradient>
+
+                <linearGradient id="metalBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#CBD5E1"/>
+                    <stop offset="50%" stop-color="#64748B"/>
+                    <stop offset="100%" stop-color="#475569"/>
+                </linearGradient>
+
+                <linearGradient id="rectBg" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#0F2887"/>
+                    <stop offset="100%" stop-color="#1A34A5"/>
+                </linearGradient>
+
+                <linearGradient id="lightBg" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#EBF3FF"/>
+                    <stop offset="100%" stop-color="#C7DCFF"/>
+                </linearGradient>
+
+                <!-- 텍스트 호 경로 -->
+                <!-- 상단 곡선 (바깥 테두리): 오.경.감. -->
+                <path id="topArc" d="M 58.5,250 A 191.5,191.5 0 1,1 441.5,250" fill="none" />
+                <!-- 하단 곡선 (바깥 테두리): 오션중학교 -->
+                <path id="bottomArc" d="M 58.5,250 A 191.5,191.5 0 0,0 441.5,250" fill="none" />
+                
+                <!-- 안쪽 상단 곡선: 업무 경감 앱 모음 (반지름 r=130으로 안쪽 띠 경계에 가깝게) -->
+                <path id="innerTopArc" d="M 120,250 A 130,130 0 0,1 380,250" fill="none" />
+            </defs>
+
+            <!-- 바깥쪽 메탈 링 테두리 -->
+            <circle cx="250" cy="250" r="240" fill="none" stroke="url(#metalBorder)" stroke-width="6" />
+            <circle cx="250" cy="250" r="234" fill="none" stroke="#1A34A5" stroke-width="2" />
+
+            <!-- 주 파란색 엠블럼 원형 띠 -->
+            <circle cx="250" cy="250" r="225" fill="url(#outerGradient)" />
+
+            <!-- 안쪽 분리 테두리 -->
+            <circle cx="250" cy="250" r="158" fill="none" stroke="url(#metalBorder)" stroke-width="4" />
+            <!-- 안쪽 바탕 -->
+            <circle cx="250" cy="250" r="154" fill="#F8FAFC" />
+
+            <!-- 상단 텍스트 (바깥): 오. 경. 감. -->
+            <text fill="#FFFFFF" font-size="32" font-weight="900" letter-spacing="4" dy="12">
+                <textPath href="#topArc" startOffset="50%" text-anchor="middle">오. 경. 감.</textPath>
+            </text>
+
+            <!-- 하단 텍스트 (바깥): 오션중학교 (업무 경감 앱 모음 삭제) -->
+            <text fill="#FFFFFF" font-size="30" font-weight="800" letter-spacing="4" dy="10">
+                <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">오션중학교</textPath>
+            </text>
+
+            <!-- 안쪽 상단 텍스트 (안쪽 띠 상단 최대한 가깝게): 업무 경감 앱 모음 -->
+            <text fill="#0D1C68" font-size="19" font-weight="900" letter-spacing="1.5" dy="-3">
+                <textPath href="#innerTopArc" startOffset="50%" text-anchor="middle">업무 경감 앱 모음</textPath>
+            </text>
+
+            <!-- 별 장식 요소 -->
+            <g>
+                <defs>
+                    <polygon id="star" points="0,-8 1.8,-2.5 7.6,-2.5 2.9,1 4.7,6.5 0,3.1 -4.7,6.5 -2.9,1 -7.6,-2.5 -1.8,-2.5" fill="#CBD5E1" />
+                </defs>
+                <!-- 왼쪽 별 5개 -->
+                <use href="#star" x="58.5" y="250" transform="rotate(-24, 250, 250)" />
+                <use href="#star" x="58.5" y="250" transform="rotate(-12, 250, 250)" />
+                <use href="#star" x="58.5" y="250" transform="rotate(0, 250, 250)" />
+                <use href="#star" x="58.5" y="250" transform="rotate(12, 250, 250)" />
+                <use href="#star" x="58.5" y="250" transform="rotate(24, 250, 250)" />
+                <!-- 오른쪽 별 5개 -->
+                <use href="#star" x="441.5" y="250" transform="rotate(-24, 250, 250)" />
+                <use href="#star" x="441.5" y="250" transform="rotate(-12, 250, 250)" />
+                <use href="#star" x="441.5" y="250" transform="rotate(0, 250, 250)" />
+                <use href="#star" x="441.5" y="250" transform="rotate(12, 250, 250)" />
+                <use href="#star" x="441.5" y="250" transform="rotate(24, 250, 250)" />
+            </g>
+
+            <!-- ================= 인터랙티브 버튼 영역 ================= -->
+            
+            <!-- 
+              수학적 좌표 정보 재계산:
+              - 사각형 전체 높이: 134.16 (y=182.92 ~ 317.08)
+              - 왼쪽 그룹(원+삼각형) 전체 높이: 사각형과 동일한 134.16. (원은 최상단, 삼각형은 최하단에 맞춤)
+              - 오른쪽 내부 삼각형 높이: 사각형 높이의 절반 = 67.08 (y=250 ~ 317.08)
+            -->
+
+            <!-- 1. 네비게이션 버튼 4: 등교맞이 및 급식 지도 교사 편성표 (왼쪽 세모) -->
+            <g id="btn-guidance" class="nav-btn" data-name="등교맞이 및 급식 지도 교사 편성표">
+                <!-- 왼쪽 세모 기반 도형 배경 (원의 하단 꼭짓점 y=250.92 에서 밑변 y=317.08 까지) -->
+                <polygon points="115.84,317.08 250,317.08 182.92,250.92" fill="url(#outerGradient)" stroke="#0D1C68" stroke-width="2" />
+                
+                <!-- 텍스트 (삼각형 너비에 맞춰 3줄로 분할하여 하단에 배치) -->
+                <text x="182.92" y="282" fill="#FFFFFF" font-size="10" font-weight="900" text-anchor="middle">등교맞이</text>
+                <text x="182.92" y="295" fill="#FFFFFF" font-size="10" font-weight="900" text-anchor="middle">및 급식 지도</text>
+                <text x="182.92" y="308" fill="#FFFFFF" font-size="10" font-weight="900" text-anchor="middle">교사 편성표</text>
+            </g>
+
+            <!-- 2. 네비게이션 버튼 1: 교과 교실 현황 (원의 최상단이 사각형의 최상단(y=182.92)과 일치, 하단은 삼각형 꼭짓점과 연결) -->
+            <g id="btn-classroom" class="nav-btn" data-name="교과 교실 현황">
+                <circle cx="182.92" cy="216.92" r="34" fill="url(#lightBg)" stroke="#1A34A5" stroke-width="3" />
+                <text x="182.92" y="211.92" fill="#0D1C68" font-size="14" font-weight="900" text-anchor="middle">교과 교실</text>
+                <text x="182.92" y="228.92" fill="#0D1C68" font-size="14" font-weight="900" text-anchor="middle">현황</text>
+            </g>
+
+            <!-- 3. 네비게이션 버튼 2: 선택 과목 출결 현황 -->
+            <g id="btn-attendance" class="nav-btn" data-name="선택 과목 출결 현황">
+                <!-- 정사각형 (y=182.92, 높이 134.16) -->
+                <rect x="250" y="182.92" width="134.16" height="134.16" fill="url(#rectBg)" stroke="#0D1C68" stroke-width="2" />
+                
+                <!-- 텍스트 (내부 삼각형을 침범하지 않도록 상단 여백 중앙에 배치) -->
+                <text x="317.08" y="210" fill="#FFFFFF" font-size="13" font-weight="900" text-anchor="middle">선택 과목</text>
+                <text x="317.08" y="228" fill="#FFFFFF" font-size="13" font-weight="900" text-anchor="middle">출결 현황</text>
+            </g>
+
+            <!-- 4. 네비게이션 버튼 3: 학급별 일출결 현황 (높이를 사각형의 절반(y=250 ~ 317.08)으로 맞춤) -->
+            <g id="btn-class-attendance" class="nav-btn" data-name="학급별 일출결 현황">
+                <!-- 내부 삼각형: 왼쪽(250) 오른쪽(384.16)이 사각형 하단 변과 일치, 높이는 절반 -->
+                <polygon points="250,317.08 384.16,317.08 317.08,250" fill="url(#lightBg)" stroke="#1A34A5" stroke-width="2.5" />
+                
+                <!-- 3행 텍스트 -->
+                <text x="317.08" y="276" fill="#0D1C68" font-size="11.5" font-weight="900" text-anchor="middle">학급별</text>
+                <text x="317.08" y="291" fill="#0D1C68" font-size="11.5" font-weight="900" text-anchor="middle">일출결</text>
+                <text x="317.08" y="306" fill="#0D1C68" font-size="11.5" font-weight="900" text-anchor="middle">현황</text>
+            </g>
+        </svg>
+
+        <!-- 하단 컨트롤 영역 -->
+        <div class="control-panel">
+            <span class="info-badge">💡 아이콘을 클릭하면 설정된 앱으로 이동합니다.</span>
+            <button class="edit-toggle-btn" id="openModalBtn">
+                ⚙️ 링크 주소 설정
+            </button>
+        </div>
+    </main>
+
+    <!-- 바로가기 URL 설정 모달 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>웹페이지 바로가기 URL 설정</h3>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="urlForm">
+                <div class="input-group">
+                    <label for="urlClassroom">1. 교과 교실 현황 URL</label>
+                    <input type="url" id="urlClassroom" placeholder="https://..." required>
+                </div>
+                <div class="input-group">
+                    <label for="urlAttendance">2. 선택 과목 출결 현황 URL</label>
+                    <input type="url" id="urlAttendance" placeholder="https://..." required>
+                </div>
+                <div class="input-group">
+                    <label for="urlClassAttendance">3. 학급별 일출결 현황 URL</label>
+                    <input type="url" id="urlClassAttendance" placeholder="https://..." required>
+                </div>
+                <div class="input-group">
+                    <label for="urlGuidance">4. 등교맞이 및 급식 지도 편성표 URL</label>
+                    <input type="url" id="urlGuidance" placeholder="https://..." required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">취소</button>
+                    <button type="submit" class="btn btn-primary">저장하기</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 기본 이동 URL 설정
+        const defaultLinks = {
+            classroom: "https://script.google.com/macros/s/AKfycbzlnYyGs1Ui9JDvZDyY1AjP7UyI27GHPIfTRuzF3c_y4z8bAJKoLwobmxwbMcfTi_TV/exec",
+            attendance: "https://script.google.com/macros/s/AKfycbwQHqk6bwErLFCyYmzg36iFbQtjckQyY-tGhU4TfhLUxyhsmMiW45zAiiFH5LkyF_DC/exec",
+            classAttendance: "https://docs.google.com/spreadsheets/d/17VsW-VpKkH8CZ7ezS2UDa6Z1dB27ZvMUn6eRJUB-5mU/edit?gid=487770614#gid=487770614",
+            guidance: "https://script.google.com/macros/s/AKfycbykQnS-rSJLm-9rH-n9Gp0VXuYEPGzI7hExoxi0px43Jy3yxCXVQ8fyxujwg5GJoHoKtQ/exec"
+        };
+
+        // 로컬 스토리지에서 URL 가져오기 또는 기본값 적용 (버전 v2로 갱신하여 이전 캐시 덮어쓰기)
+        function getAppLinks() {
+            const saved = localStorage.getItem("ocean_app_links_v2");
+            return saved ? JSON.parse(saved) : defaultLinks;
+        }
+
+        function saveAppLinks(links) {
+            localStorage.setItem("ocean_app_links_v2", JSON.stringify(links));
+        }
+
+        // 요소 참조
+        const btnClassroom = document.getElementById("btn-classroom");
+        const btnAttendance = document.getElementById("btn-attendance");
+        const btnClassAttendance = document.getElementById("btn-class-attendance");
+        const btnGuidance = document.getElementById("btn-guidance");
+
+        const modalOverlay = document.getElementById("modalOverlay");
+        const openModalBtn = document.getElementById("openModalBtn");
+        const closeModalBtn = document.getElementById("closeModalBtn");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const urlForm = document.getElementById("urlForm");
+
+        const tooltip = document.getElementById("tooltip");
+
+        // 클릭 이벤트 설정
+        btnClassroom.addEventListener("click", () => {
+            const links = getAppLinks();
+            window.open(links.classroom, "_blank");
+        });
+
+        btnAttendance.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const links = getAppLinks();
+            window.open(links.attendance, "_blank");
+        });
+
+        btnClassAttendance.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const links = getAppLinks();
+            window.open(links.classAttendance, "_blank");
+        });
+        
+        btnGuidance.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const links = getAppLinks();
+            window.open(links.guidance || defaultLinks.guidance, "_blank");
+        });
+
+        // 툴팁 이벤트
+        const navBtns = document.querySelectorAll(".nav-btn");
+        navBtns.forEach(btn => {
+            btn.addEventListener("mousemove", (e) => {
+                const name = btn.getAttribute("data-name");
+                tooltip.textContent = `${name} (클릭하여 이동)`;
+                tooltip.style.display = "block";
+                tooltip.style.left = (e.pageX + 12) + "px";
+                tooltip.style.top = (e.pageY + 12) + "px";
+            });
+
+            btn.addEventListener("mouseleave", () => {
+                tooltip.style.display = "none";
+            });
+        });
+
+        // 모달 열기/닫기
+        openModalBtn.addEventListener("click", () => {
+            const links = getAppLinks();
+            document.getElementById("urlClassroom").value = links.classroom;
+            document.getElementById("urlAttendance").value = links.attendance;
+            document.getElementById("urlClassAttendance").value = links.classAttendance;
+            document.getElementById("urlGuidance").value = links.guidance || defaultLinks.guidance;
+            modalOverlay.classList.add("active");
+        });
+
+        function closeModal() {
+            modalOverlay.classList.remove("active");
+        }
+
+        closeModalBtn.addEventListener("click", closeModal);
+        cancelBtn.addEventListener("click", closeModal);
+        modalOverlay.addEventListener("click", (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // URL 저장 처리
+        urlForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const newLinks = {
+                classroom: document.getElementById("urlClassroom").value,
+                attendance: document.getElementById("urlAttendance").value,
+                classAttendance: document.getElementById("urlClassAttendance").value,
+                guidance: document.getElementById("urlGuidance").value
+            };
+            saveAppLinks(newLinks);
+            closeModal();
+            alert("바로가기 주소가 성공적으로 저장되었습니다!");
+        });
+    </script>
+</body>
+</html>
