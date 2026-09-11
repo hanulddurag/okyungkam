@@ -145,6 +145,46 @@
             border: 1px solid #E2E8F0;
         }
 
+        .code-block {
+            background-color: #F1F5F9;
+            padding: 16px;
+            padding-top: 36px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #334155;
+            white-space: pre-wrap;
+            margin: 10px 0;
+            border: 1px solid #CBD5E1;
+            position: relative;
+            text-align: left;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .instruction-list {
+            font-size: 0.9rem;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            padding-left: 20px;
+            text-align: left;
+        }
+        
+        .instruction-list li { margin-bottom: 8px; }
+
         /* 모달 스타일 */
         .modal-overlay {
             position: fixed;
@@ -314,6 +354,8 @@
                 
                 <!-- 안쪽 상단 곡선: 업무 경감 앱 모음 (반지름 r=130으로 안쪽 띠 경계에 가깝게) -->
                 <path id="innerTopArc" d="M 120,250 A 130,130 0 0,1 380,250" fill="none" />
+                <!-- 안쪽 하단 곡선: 자리 배치표 (반지름 r=115로 수정하여 중앙으로 조금 더 올림) -->
+                <path id="innerBottomArc" d="M 135,250 A 115,115 0 0,0 365,250" fill="none" />
             </defs>
 
             <!-- 바깥쪽 메탈 링 테두리 -->
@@ -389,34 +431,53 @@
                 <text x="182.92" y="228.92" fill="#0D1C68" font-size="14" font-weight="900" text-anchor="middle">현황</text>
             </g>
 
-            <!-- 3. 네비게이션 버튼 2: 선택 과목 출결 현황 -->
-            <g id="btn-attendance" class="nav-btn" data-name="선택 과목 출결 현황">
+            <!-- 3. 네비게이션 버튼 2: 스마트 출결 관리 -->
+            <g id="btn-attendance" class="nav-btn" data-name="스마트 출결 관리">
                 <!-- 정사각형 (y=182.92, 높이 134.16) -->
                 <rect x="250" y="182.92" width="134.16" height="134.16" fill="url(#rectBg)" stroke="#0D1C68" stroke-width="2" />
                 
                 <!-- 텍스트 (내부 삼각형을 침범하지 않도록 상단 여백 중앙에 배치) -->
-                <text x="317.08" y="210" fill="#FFFFFF" font-size="13" font-weight="900" text-anchor="middle">선택 과목</text>
-                <text x="317.08" y="228" fill="#FFFFFF" font-size="13" font-weight="900" text-anchor="middle">출결 현황</text>
+                <text x="317.08" y="210" fill="#FFFFFF" font-size="13" font-weight="900" text-anchor="middle">스마트</text>
+                <text x="317.08" y="228" fill="#FFFFFF" font-size="13" font-weight="900" text-anchor="middle">출결 관리</text>
             </g>
 
-            <!-- 4. 네비게이션 버튼 3: 학급별 일출결 현황 (높이를 사각형의 절반(y=250 ~ 317.08)으로 맞춤) -->
-            <g id="btn-class-attendance" class="nav-btn" data-name="학급별 일출결 현황">
+            <!-- 4. 네비게이션 버튼 3: 학급별 출결 현황 (높이를 사각형의 절반(y=250 ~ 317.08)으로 맞춤) -->
+            <g id="btn-class-attendance" class="nav-btn" data-name="학급별 출결 현황">
                 <!-- 내부 삼각형: 왼쪽(250) 오른쪽(384.16)이 사각형 하단 변과 일치, 높이는 절반 -->
                 <polygon points="250,317.08 384.16,317.08 317.08,250" fill="url(#lightBg)" stroke="#1A34A5" stroke-width="2.5" />
                 
-                <!-- 3행 텍스트 -->
-                <text x="317.08" y="276" fill="#0D1C68" font-size="11.5" font-weight="900" text-anchor="middle">학급별</text>
-                <text x="317.08" y="291" fill="#0D1C68" font-size="11.5" font-weight="900" text-anchor="middle">일출결</text>
-                <text x="317.08" y="306" fill="#0D1C68" font-size="11.5" font-weight="900" text-anchor="middle">현황</text>
+                <!-- 2행 텍스트 (삼각형 밑변에 가깝게 아래로 이동) -->
+                <text x="317.08" y="289" fill="#0D1C68" font-size="13" font-weight="900" text-anchor="middle">학급별</text>
+                <text x="317.08" y="307" fill="#0D1C68" font-size="13" font-weight="900" text-anchor="middle">출결 현황</text>
+            </g>
+
+            <!-- 5. 네비게이션 버튼 5: 자리 배치표 (안쪽 하단 텍스트 버튼) -->
+            <g id="btn-seating" class="nav-btn" data-name="자리 배치표">
+                <!-- 테두리 캡슐 배경 요소 (둥근 테두리를 가진 뱃지 형태) -->
+                <path d="M 184.1,344.2 A 115,115 0 0,0 315.9,344.2" fill="none" stroke="#1A34A5" stroke-width="32" stroke-linecap="round" />
+                <path d="M 184.1,344.2 A 115,115 0 0,0 315.9,344.2" fill="none" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round" />
+                
+                <!-- 마우스 오버 및 클릭을 쉽게 하기 위한 투명한 굵은 패스 영역 -->
+                <path d="M 135,250 A 115,115 0 0,0 365,250" fill="none" stroke="transparent" stroke-width="35" />
+                
+                <!-- 자리 배치표 텍스트 -->
+                <text fill="#0D1C68" font-size="16" font-weight="900" letter-spacing="1.2" dy="5.5">
+                    <textPath href="#innerBottomArc" startOffset="50%" text-anchor="middle">자리 배치표</textPath>
+                </text>
             </g>
         </svg>
 
         <!-- 하단 컨트롤 영역 -->
         <div class="control-panel">
             <span class="info-badge">💡 아이콘을 클릭하면 설정된 앱으로 이동합니다.</span>
-            <button class="edit-toggle-btn" id="openModalBtn">
-                ⚙️ 링크 주소 설정
-            </button>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; margin-top: 10px;">
+                <button class="edit-toggle-btn" id="openGasModalBtn" style="background-color: #059669;">
+                    🚀 구글 앱스크립트 배포
+                </button>
+                <button class="edit-toggle-btn" id="openModalBtn">
+                    ⚙️ 링크 주소 설정
+                </button>
+            </div>
         </div>
     </main>
 
@@ -433,16 +494,20 @@
                     <input type="url" id="urlClassroom" placeholder="https://..." required>
                 </div>
                 <div class="input-group">
-                    <label for="urlAttendance">2. 선택 과목 출결 현황 URL</label>
+                    <label for="urlAttendance">2. 스마트 출결 관리 URL</label>
                     <input type="url" id="urlAttendance" placeholder="https://..." required>
                 </div>
                 <div class="input-group">
-                    <label for="urlClassAttendance">3. 학급별 일출결 현황 URL</label>
+                    <label for="urlClassAttendance">3. 학급별 출결 현황 URL</label>
                     <input type="url" id="urlClassAttendance" placeholder="https://..." required>
                 </div>
                 <div class="input-group">
                     <label for="urlGuidance">4. 등교맞이 및 급식 지도 편성표 URL</label>
                     <input type="url" id="urlGuidance" placeholder="https://..." required>
+                </div>
+                <div class="input-group">
+                    <label for="urlSeating">5. 자리 배치표 URL</label>
+                    <input type="url" id="urlSeating" placeholder="https://..." required>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="cancelBtn">취소</button>
@@ -452,23 +517,55 @@
         </div>
     </div>
 
+    <!-- 구글 앱스크립트 배포 가이드 모달 -->
+    <div class="modal-overlay" id="gasModalOverlay">
+        <div class="modal" style="max-width: 550px;">
+            <div class="modal-header">
+                <h3>구글 앱스크립트(Web App) 배포 가이드</h3>
+                <button class="close-btn" id="closeGasModalBtn">&times;</button>
+            </div>
+            <div style="max-height: 60vh; overflow-y: auto; padding-right: 5px;">
+                <ol class="instruction-list">
+                    <li><a href="https://script.google.com" target="_blank" style="color: var(--primary-blue); font-weight: bold; text-decoration: underline;">구글 앱스크립트(script.google.com)</a>에 접속하여 <b>[새 프로젝트]</b>를 만듭니다.</li>
+                    <li>기본 생성된 <code>Code.gs</code> 파일의 내용을 모두 지우고 아래 코드를 복사하여 붙여넣습니다.</li>
+                    <div class="code-block">
+<button class="copy-btn" id="copyGasBtn">복사하기</button>
+function doGet() {
+  return HtmlService.createHtmlOutputFromFile('Index')
+    .setTitle('오션중학교 업무 경감 포털')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+}</div>
+                    <li>앱스크립트 왼쪽 파일 탭에서 <b>[+]</b> 버튼을 눌러 <b>[HTML]</b>을 선택하고 파일명을 <code>Index</code>로 지정합니다.</li>
+                    <li>우측 코드 에디터의 <b>전체 HTML 코드</b>를 복사하여 방금 만든 <code>Index.html</code>에 모두 붙여넣습니다.</li>
+                    <li>화면 우측 상단의 <b>[배포] > [새 배포]</b>를 클릭합니다.</li>
+                    <li>유형 선택(톱니바퀴 아이콘)에서 <b>[웹 앱]</b>을 선택하고, 액세스 권한을 <b>[모든 사용자]</b>로 변경한 후 배포합니다.</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="gasConfirmBtn">확인 완료</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 기본 이동 URL 설정
         const defaultLinks = {
             classroom: "https://script.google.com/macros/s/AKfycbzlnYyGs1Ui9JDvZDyY1AjP7UyI27GHPIfTRuzF3c_y4z8bAJKoLwobmxwbMcfTi_TV/exec",
             attendance: "https://script.google.com/macros/s/AKfycbwQHqk6bwErLFCyYmzg36iFbQtjckQyY-tGhU4TfhLUxyhsmMiW45zAiiFH5LkyF_DC/exec",
             classAttendance: "https://docs.google.com/spreadsheets/d/17VsW-VpKkH8CZ7ezS2UDa6Z1dB27ZvMUn6eRJUB-5mU/edit?gid=487770614#gid=487770614",
-            guidance: "https://script.google.com/macros/s/AKfycbykQnS-rSJLm-9rH-n9Gp0VXuYEPGzI7hExoxi0px43Jy3yxCXVQ8fyxujwg5GJoHoKtQ/exec"
+            guidance: "https://script.google.com/macros/s/AKfycbyJXD5h5YKWAIr1MX_OFFkPTQIv7lxp3_ZG8Mpj2le8Pl3n0FJsEx0X35nEKCagai1fPA/exec",
+            seating: "https://hanulddurag.github.io/jaribaechi/" // 자리 배치표 기본 URL 업데이트
         };
 
-        // 로컬 스토리지에서 URL 가져오기 또는 기본값 적용 (버전 v2로 갱신하여 이전 캐시 덮어쓰기)
+        // 로컬 스토리지에서 URL 가져오기 또는 기본값 적용 (버전 v5로 갱신하여 이전 캐시 덮어쓰기)
         function getAppLinks() {
-            const saved = localStorage.getItem("ocean_app_links_v2");
+            const saved = localStorage.getItem("ocean_app_links_v5");
             return saved ? JSON.parse(saved) : defaultLinks;
         }
 
         function saveAppLinks(links) {
-            localStorage.setItem("ocean_app_links_v2", JSON.stringify(links));
+            localStorage.setItem("ocean_app_links_v5", JSON.stringify(links));
         }
 
         // 요소 참조
@@ -476,12 +573,19 @@
         const btnAttendance = document.getElementById("btn-attendance");
         const btnClassAttendance = document.getElementById("btn-class-attendance");
         const btnGuidance = document.getElementById("btn-guidance");
+        const btnSeating = document.getElementById("btn-seating");
 
         const modalOverlay = document.getElementById("modalOverlay");
         const openModalBtn = document.getElementById("openModalBtn");
         const closeModalBtn = document.getElementById("closeModalBtn");
         const cancelBtn = document.getElementById("cancelBtn");
         const urlForm = document.getElementById("urlForm");
+
+        const gasModalOverlay = document.getElementById("gasModalOverlay");
+        const openGasModalBtn = document.getElementById("openGasModalBtn");
+        const closeGasModalBtn = document.getElementById("closeGasModalBtn");
+        const gasConfirmBtn = document.getElementById("gasConfirmBtn");
+        const copyGasBtn = document.getElementById("copyGasBtn");
 
         const tooltip = document.getElementById("tooltip");
 
@@ -509,6 +613,12 @@
             window.open(links.guidance || defaultLinks.guidance, "_blank");
         });
 
+        btnSeating.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const links = getAppLinks();
+            window.open(links.seating || defaultLinks.seating, "_blank");
+        });
+
         // 툴팁 이벤트
         const navBtns = document.querySelectorAll(".nav-btn");
         navBtns.forEach(btn => {
@@ -532,6 +642,7 @@
             document.getElementById("urlAttendance").value = links.attendance;
             document.getElementById("urlClassAttendance").value = links.classAttendance;
             document.getElementById("urlGuidance").value = links.guidance || defaultLinks.guidance;
+            document.getElementById("urlSeating").value = links.seating || defaultLinks.seating;
             modalOverlay.classList.add("active");
         });
 
@@ -552,11 +663,51 @@
                 classroom: document.getElementById("urlClassroom").value,
                 attendance: document.getElementById("urlAttendance").value,
                 classAttendance: document.getElementById("urlClassAttendance").value,
-                guidance: document.getElementById("urlGuidance").value
+                guidance: document.getElementById("urlGuidance").value,
+                seating: document.getElementById("urlSeating").value
             };
             saveAppLinks(newLinks);
             closeModal();
             alert("바로가기 주소가 성공적으로 저장되었습니다!");
+        });
+
+        // 앱스크립트 가이드 모달 열기/닫기
+        openGasModalBtn.addEventListener("click", () => {
+            gasModalOverlay.classList.add("active");
+        });
+
+        function closeGasModal() {
+            gasModalOverlay.classList.remove("active");
+        }
+
+        closeGasModalBtn.addEventListener("click", closeGasModal);
+        gasConfirmBtn.addEventListener("click", closeGasModal);
+        gasModalOverlay.addEventListener("click", (e) => {
+            if (e.target === gasModalOverlay) closeGasModal();
+        });
+
+        // 클립보드 복사 기능 (iframe 환경 고려 execCommand 사용)
+        copyGasBtn.addEventListener("click", () => {
+            const code = `function doGet() {\n  return HtmlService.createHtmlOutputFromFile('Index')\n    .setTitle('오션중학교 업무 경감 포털')\n    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)\n    .addMetaTag('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');\n}`;
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                copyGasBtn.textContent = "복사 완료! ✔";
+                copyGasBtn.style.backgroundColor = "#059669";
+                setTimeout(() => {
+                    copyGasBtn.textContent = "복사하기";
+                    copyGasBtn.style.backgroundColor = "var(--primary-blue)";
+                }, 2000);
+            } catch (err) {
+                alert("복사에 실패했습니다. 텍스트를 직접 드래그하여 복사해 주세요.");
+            }
+            
+            document.body.removeChild(textarea);
         });
     </script>
 </body>
